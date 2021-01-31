@@ -36,34 +36,9 @@ namespace Valkyrie.Pages
 
         public PartialViewResult GetPaginatedResult(int currentPage, int pageSize = 10)
         {
-
             partialCert.CrtSHes = partialCert.CrtSHes.OrderBy(d => d.id).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
             return Partial("_Certs", partialCert);
         }
-
-        //public async Task<PartialViewResult> OnPostAsync(string UserInput)
-        //{
-        //    HttpAsync httpAsync = new HttpAsync();
-        //    string response = await httpAsync.Get(CrtShUrl.Replace("#URL#", UserInput));
-        
-        //    partialCert.CrtSHes = JsonConvert.DeserializeObject<List<CrtSH>>(response);
-        //    if (partialCert.CrtSHes != null && partialCert.CrtSHes.Count > 0)
-        //    {
-        //        partialCert.Count = partialCert.CrtSHes.Count;
-           
-        //   return   Partial("_Certs", partialCert);
-
-
-        //        //return new PartialViewResult
-        //        //{
-        //        //    ViewName = "_Certs",
-        //        //    ViewData = new ViewDataDictionary<List<PartialCert>>(ViewData, partialCert)
-        //        //};
-        //    }
-        //    //return Content(response);
-        //    return Partial("~/Partial/_Certs.cshtml", this);
-        //}
-
 
 
         public async Task<JsonResult> OnPostAsync(string UserInput)

@@ -11,7 +11,7 @@
             <div class="input-group mb-3">
 
                 @Html.AntiForgeryToken()
-                <input type="text" value="cdiscout.com" class="form-control" id="UserInput" placeholder="Enter an Identity (Domain Name, Organization Name, etc),
+                <input type="text" class="form-control" id="UserInput" placeholder="Enter an Identity (Domain Name, Organization Name, etc),
 " aria-label="Recipient's username" aria-describedby="basic-addon2" asp-for="UserInput">
                 <div class="input-group-append">
                     <button class="btn btn-success" type="button" id="btnSend">Submit</button>
@@ -20,9 +20,6 @@
             </div>
         </div>
     </div>
-
-
-
     <table id="customerDatatable" class="table table-sm table-dark" width="100%" cellspacing="0">
         <thead>
             <tr>
@@ -80,32 +77,3 @@
 
 
     }
-
-    <div id="CertResult">
-        <!-- ...content... -->
-    </div>
-
-
-    @*@section Scripts {
-            <script type="text/javascript">
-                $('#btnSend').on('click', function () {
-                    var UserInput = $('#UserInput').val();
-                    var $CertResult = $('#CertResult');
-                    $.ajax({
-                        type: "POST",
-                        url: "/Certificate",
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader("TryHarder",
-                                $('input:hidden[name="__RequestVerificationToken"]').val());
-                        },
-                        data: { UserInput: UserInput },
-                        success: function (response) {
-                            $CertResult.replaceWith(response);
-                        },
-                        failure: function (response) {
-                            alert(response);
-                        }
-                    });
-                })
-            </script>
-        }*@
