@@ -1,0 +1,111 @@
+﻿@page
+@model CertificateModel
+
+
+
+    <div class="card" style="width:auto">
+        <div class="card-body">
+            <h5 class="card-title">Certificate Search</h5>
+            <h6 class="card-subtitle mb-2 text-muted">(Site: https://crt.sh/, Rate Limit: None)</h6>
+            <p class="card-text">Discovers certificates by searching all of the publicly known Certificate Transparency (CT) logs. </p>
+            <div class="input-group mb-3">
+
+                @Html.AntiForgeryToken()
+                <input type="text" value="cdiscout.com" class="form-control" id="UserInput" placeholder="Enter an Identity (Domain Name, Organization Name, etc),
+" aria-label="Recipient's username" aria-describedby="basic-addon2" asp-for="UserInput">
+                <div class="input-group-append">
+                    <button class="btn btn-success" type="button" id="btnSend">Submit</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <table id="customerDatatable" class="table table-sm table-dark" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Issuer CA ID</th>
+                <th>Issuer Name</th>
+                <th>Common Name</th>
+                <th>Matching Identities</th>
+                <th>Not Before</th>
+                <th>Not After</th>
+                <th>Logged At</th>
+            </tr>
+        </thead>
+    </table>
+    <div class="d-flex justify-content-center" id="loader">
+        <div class="spinner-border text-warning" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    @section Scripts
+{
+        <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+
+        <script type="text/javascript">
+            $("#loader").attr('style', 'display:none!important');
+
+            var t = $('#customerDatatable').DataTable(
+                {
+                    "order": [[6, "desc"]]
+                });
+
+            $('#btnSend').on('click', function () {
+                $("#loader").attr('style', 'display:flex');
+                var UserInput = $('#UserInput').val();
+                t.clear().draw();
+                $.ajax({
+                    type: "POST",
+                    url: "/Certificate",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("TryHarder",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    data: { UserInput: UserInput },
+                    success: function (response) {
+                        var j = JSON.parse(response);
+                        $.each(j, function (key, value) {
+                            t.row.add([value.issuer_ca_id, value.issuer_name, value.common_name, value.name_value, value.not_before, value.not_after, value.entry_timestamp]).draw(true);
+                        });
+                        $("#loader").attr('style', 'display:none!important');
+                    },
+                });
+            })
+
+        </script>
+
+
+    }
+
+    <div id="CertResult">
+        <!-- ...content... -->
+    </div>
+
+
+    @*@section Scripts {
+            <script type="text/javascript">
+                $('#btnSend').on('click', function () {
+                    var UserInput = $('#UserInput').val();
+                    var $CertResult = $('#CertResult');
+                    $.ajax({
+                        type: "POST",
+                        url: "/Certificate",
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("TryHarder",
+                                $('input:hidden[name="__RequestVerificationToken"]').val());
+                        },
+                        data: { UserInput: UserInput },
+                        success: function (response) {
+                            $CertResult.replaceWith(response);
+                        },
+                        failure: function (response) {
+                            alert(response);
+                        }
+                    });
+                })
+            </script>
+        }*@
