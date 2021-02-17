@@ -21,6 +21,7 @@
         <hr />
     </div>
 </div>
+<div id="chart"></div>
 <div class="row">
     <div class="col-6">
         <ul id="messagesList"></ul>
@@ -28,3 +29,26 @@
 </div>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/Twitter.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script>
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var jsonData = $.ajax({
+            url: "/Twitter?handler=ChartData",
+            dataType: "json",
+            async: false
+        }).responseText;
+        var data = new google.visualization.DataTable(jsonData);
+        var options = {
+            'title': '#Tweets / Dayt',
+            'width': 600,
+            'height': 500
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+        chart.draw(data, options);
+        console.log(data);
+    }
+</script>
