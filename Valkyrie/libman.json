@@ -9,6 +9,17 @@
     {
       "library": "datatables@1.10.21",
       "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@latest",
+      "destination": "wwwroot/js/signalr/",
+      "files": [
+        "dist/browser/signalr.js",
+        "dist/browser/signalr.js.map",
+        "dist/browser/signalr.min.js",
+        "dist/browser/signalr.min.js.map"
+      ]
     }
   ]
 }

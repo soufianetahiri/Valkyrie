@@ -1,15 +1,11 @@
 ﻿@page
 @model CertificateModel
-
-
-
     <div class="card" style="width:auto">
         <div class="card-body">
             <h5 class="card-title">Certificate Search</h5>
             <h6 class="card-subtitle mb-2 text-muted">(Site: https://crt.sh/, Rate Limit: None)</h6>
             <p class="card-text">Discovers certificates by searching all of the publicly known Certificate Transparency (CT) logs. </p>
             <div class="input-group mb-3">
-
                 @Html.AntiForgeryToken()
                 <input type="text" class="form-control" id="UserInput" placeholder="Enter an Identity (Domain Name, Organization Name, etc),
 " aria-label="Recipient's username" aria-describedby="basic-addon2" asp-for="UserInput">

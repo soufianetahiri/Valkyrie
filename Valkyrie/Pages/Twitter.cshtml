@@ -1,0 +1,30 @@
+﻿@page
+@model Valkyrie.Pages.TwitterModel
+<div class="card" style="width:auto">
+    <div class="card-body">
+        <h5 class="card-title">Monitor Hashtags</h5>
+        <h6 class="card-subtitle mb-2 text-muted">(Site: https://twitter.com, Rate Limit: https://developer.twitter.com/en/docs/twitter-api/rate-limits)</h6>
+        <p class="card-text">This will get latest (20) tweets with desired hashs then monitor for new tweets. </p>
+        <div class="input-group mb-3">
+            @Html.AntiForgeryToken()
+            <input type="text" class="form-control" id="UserInput" placeholder="Enter #hash1;keyword;#hash2;...
+" aria-label="Recipient's username" aria-describedby="basic-addon2" asp-for="UserInput">
+            <div class="input-group-append">
+                <button class="btn btn-success" type="button" id="btnSend">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/Twitter.js"></script>

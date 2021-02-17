@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Valkyrie.Helper;
-
 namespace Valkyrie
 {
     public class Startup
@@ -30,7 +29,7 @@ namespace Valkyrie
             services.AddRazorPages();
             services.AddAntiforgery(o => o.HeaderName = "TryHarder");
 
- 
+            services.AddSignalR();
 
 
             // If using Kestrel:
@@ -70,6 +69,8 @@ namespace Valkyrie
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+           endpoints.MapHub<TwitterHub>("/TwitterHub");
+  //              endpoints.MapHub<TwitterHub>("/TwitterModel");
             });
         }
     }
