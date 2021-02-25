@@ -4,10 +4,10 @@
     <div class="card-body">
         <h5 class="card-title">Monitor Hashtags</h5>
         <h6 class="card-subtitle mb-2 text-muted">(Site: https://twitter.com, Rate Limit: https://developer.twitter.com/en/docs/twitter-api/rate-limits)</h6>
-        <p class="card-text">This will get latest (20) tweets with desired hashs then monitor for new tweets. </p>
+        <p class="card-text">This will get latest (100) tweets with desired hashtags/keywords (space separated) then monitor for new tweets. </p>
         <div class="input-group mb-3">
             @Html.AntiForgeryToken()
-            <input type="text" class="form-control" id="UserInput" placeholder="Enter #hash1;keyword;#hash2;...
+            <input type="text" class="form-control" id="UserInput" placeholder="Enter #hash1 keyword #hash2;...
 " aria-label="Recipient's username" aria-describedby="basic-addon2" asp-for="UserInput">
             <div class="input-group-append">
                 <button class="btn btn-success" type="button" id="btnSend">Submit</button>
@@ -16,39 +16,61 @@
         </div>
     </div>
 </div>
+<div class="card" style="width:auto">
+    <div class="card-body">
+        <h5 class="card-title">Latest tweets</h5>
+        <div class="list-group overflow-auto" style="max-height:800px;" id="tweetsGroup">
+        </div>
+
+    </div>
+</div>
 <div class="row">
     <div class="col-12">
         <hr />
     </div>
+
 </div>
-<div id="chart"></div>
-<div class="row">
-    <div class="col-6">
-        <ul id="messagesList"></ul>
-    </div>
-</div>
+<div><canvas id="lineChart"></canvas></div>
+
+<script src="~/lib/Chart.js/Chart.js"></script>
+<script>
+
+    document.getElementById("btnSend").addEventListener("click", function (event) {
+
+        var hashtags = document.getElementById("UserInput").value;
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var response = $.ajax({
+                async: false,
+                cache: false,
+                url: "/twitter?handler=chartdata",
+                data: {
+                    hashtags: hashtags
+                }
+            });
+            console.log(response.responseText);
+            eval(response.responseText);
+            //var jsonData = $.ajax({
+            //    url: "/Twitter?handler=ChartData",
+            //    dataType: "json",
+            //    async: false
+            //}).responseText;
+            //var data = new google.visualization.DataTable(jsonData);
+            //var options = {
+            //    'title': '#Tweets / Dayt',
+            //    'width': 600,
+            //    'height': 500
+            //};
+
+            //var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+            //chart.draw(data, options);
+            //console.log(data);
+        }
+
+    });
+</script>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/Twitter.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<script>
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-        var jsonData = $.ajax({
-            url: "/Twitter?handler=ChartData",
-            dataType: "json",
-            async: false
-        }).responseText;
-        var data = new google.visualization.DataTable(jsonData);
-        var options = {
-            'title': '#Tweets / Dayt',
-            'width': 600,
-            'height': 500
-        };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
-        chart.draw(data, options);
-        console.log(data);
-    }
-</script>
