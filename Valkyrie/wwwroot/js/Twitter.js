@@ -36,25 +36,6 @@ connection.start().then(function () {
 document.getElementById("btnSend").addEventListener("click", function (event) {
  
     var hashtags = document.getElementById("UserInput").value;
-    //google.charts.load('current', { 'packages': ['corechart'] });
-    //google.charts.setOnLoadCallback(drawChart);
-    //function drawChart() {
-    //    var jsonData = $.ajax({
-    //        url: "/Twitter?handler=ChartData",
-    //        dataType: "json",
-    //        async: false
-    //    }).responseText;
-    //    var data = new google.visualization.DataTable(jsonData);
-    //    var options = {
-    //        'title': '#Tweets / Dayt',
-    //        'width': 600,
-    //        'height': 500
-    //    };
-
-    //    var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
-    //    chart.draw(data, options);
-    //    console.log(data);
-    //}
     connection.invoke("getTweetsAsync", hashtags).catch(function (err) {
         return console.error(err.toString());
     });

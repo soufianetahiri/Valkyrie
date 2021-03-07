@@ -4,7 +4,7 @@
     <div class="card-body">
         <h5 class="card-title">Monitor Hashtags</h5>
         <h6 class="card-subtitle mb-2 text-muted">(Site: https://twitter.com, Rate Limit: https://developer.twitter.com/en/docs/twitter-api/rate-limits)</h6>
-        <p class="card-text">This will get latest (100) tweets with desired hashtags/keywords (space separated) then monitor for new tweets. </p>
+        <p class="card-text">Keep an eye on latest tweets that contain hashtags/keywords (space separated) (minitor up to 5 keywords). Chart might be incomplete due to Twitter ratelimit.</p>
         <div class="input-group mb-3">
             @Html.AntiForgeryToken()
             <input type="text" class="form-control" id="UserInput" placeholder="Enter #hash1 keyword #hash2;...
@@ -51,21 +51,6 @@
             });
             console.log(response.responseText);
             eval(response.responseText);
-            //var jsonData = $.ajax({
-            //    url: "/Twitter?handler=ChartData",
-            //    dataType: "json",
-            //    async: false
-            //}).responseText;
-            //var data = new google.visualization.DataTable(jsonData);
-            //var options = {
-            //    'title': '#Tweets / Dayt',
-            //    'width': 600,
-            //    'height': 500
-            //};
-
-            //var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
-            //chart.draw(data, options);
-            //console.log(data);
         }
 
     });

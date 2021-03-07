@@ -44,9 +44,9 @@ namespace Valkyrie
                 options.AllowSynchronousIO = true;
             });
         }
-      
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -58,7 +58,7 @@ namespace Valkyrie
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-           
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -69,8 +69,9 @@ namespace Valkyrie
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-           endpoints.MapHub<TwitterHub>("/TwitterHub");
-  //              endpoints.MapHub<TwitterHub>("/TwitterModel");
+                endpoints.MapHub<TwitterHub>("/TwitterHub");
+                endpoints.MapHub<SubdomainsHub>("/SubdomainsHub");
+                //              endpoints.MapHub<TwitterHub>("/TwitterModel");
             });
         }
     }

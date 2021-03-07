@@ -6,7 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="ChartJSCore" Version="1.5.8" />
+    <PackageReference Include="IronPython" Version="2.7.11" />
+    <PackageReference Include="IronPython.StdLib" Version="2.7.11" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Reactive" Version="5.0.0" />
     <PackageReference Include="TweetinviAPI" Version="5.0.3" />
   </ItemGroup>
  

@@ -23,36 +23,49 @@ namespace Valkyrie.Pages
         [BindProperty]
         public string UserInput { get; set; }
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
         }
         private List<TweetsData> GetTweets(string hashtags)
         {
             List<TweetsData> tweetList = new List<TweetsData>();
-            string[] keywords = hashtags.Split(" ");
+            string[] keywords = hashtags.Split(" ").Take(5).ToArray();
             foreach (string keyword in keywords)
             {
-                TwitterClient client = new TwitterClient(new TwitterCreds().GenerateCredentials());
-                client.RateLimits.ClearRateLimitCacheAsync();
-                var searchParam = new SearchTweetsParameters(keyword)
+                try
                 {
-                    Since = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day),
-                    SearchType = SearchResultType.Recent
-                };
-
-                var tweets = client.Search.SearchTweetsAsync(searchParam).Result.ToList();
-                while (tweets.Count > 0)
-                {
-                    searchParam.MaxId = tweets.Select(x => x.Id).Min() - 1;
-                    searchParam.Since = DateTime.Today;
-                    searchParam.SearchType = SearchResultType.Recent;
-                    tweets = client.Search.SearchTweetsAsync(searchParam).Result.ToList();
-                    if (tweets.Count > 0)
+                    TwitterClient client = new TwitterClient(new TwitterCreds().GenerateCredentials());
+                    client.RateLimits.ClearRateLimitCacheAsync();
+                    var searchParam = new SearchTweetsParameters(keyword)
                     {
-                        tweetList.AddRange(tweets.GroupBy(d => d.CreatedAt.Date).Select(a => new TweetsData
-                        { Count = a.Count(), Date = a.Key.ToString("dd/MM/yyyy"), Keyword = keyword }).ToList());
-                        Debug.WriteLine($"Find : {tweets.Count}");
-                        Debug.WriteLine($"All : {tweetList.Count}");
+                        Since = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day),
+                        SearchType = SearchResultType.Recent,
+                        PageSize = 100,
+                    };
+
+                    var tweets = client.Search.SearchTweetsAsync(searchParam).Result.ToList();
+                    while (tweets.Count > 0)
+                    {
+                        searchParam.MaxId = tweets.Select(x => x.Id).Min() - 1;
+                        searchParam.Since = DateTime.Today;
+                        searchParam.PageSize = 100;
+                        searchParam.SearchType = SearchResultType.Recent;
+                        tweets = client.Search.SearchTweetsAsync(searchParam).Result.ToList();
+                        if (tweets.Count > 0)
+                        {
+                            tweetList.AddRange(tweets.GroupBy(d => d.CreatedAt.Date).Select(a => new TweetsData
+                            { Count = a.Count(), Date = a.Key.ToString("dd/MM/yyyy"), Keyword = keyword }).ToList());
+                            Debug.WriteLine($"Find : {tweets.Count}");
+                            Debug.WriteLine($"All : {tweetList.Count}");
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    //quick and dirty rate limit handling 
+                    if (tweetList?.Count > 0)
+                    {
+                        return tweetList;
                     }
                 }
             }
@@ -63,10 +76,10 @@ namespace Valkyrie.Pages
         public ContentResult OnGetChartData(string hashtags)
         {
             List<string> colors = new List<string>() { "#FF6384", "#4BC0C0", "#FFCE56", "#E7E9ED", "#36A2EB" };
-      
+
             List<TweetsData> tweets = GetTweets(hashtags);
 
-            var dates = tweets.GroupBy(d => d.Date).Select(k => k.Key).ToList();
+             var dates = tweets.GroupBy(d => d.Date).Select(k => k.Key).ToList();
             Chart chart = new Chart
             {
                 Type = Enums.ChartType.PolarArea
@@ -81,7 +94,7 @@ namespace Valkyrie.Pages
                 Data = new List<double?>()
             };
             Random rnd = new Random();
-            int i;
+            int i = 0;
             foreach (string label in data.Labels)
             {
                 dataset.Data.Add(tweets.Where(l => l.Keyword == label).GroupBy(k => k.Count).Select(c => c.Key).Sum());

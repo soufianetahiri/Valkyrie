@@ -10,11 +10,15 @@ using Tweetinvi.Core.Models;
 using Tweetinvi.Models;
 using Tweetinvi.Parameters;
 using ChartJSCore.Models;
+using System.Threading;
+
 namespace Valkyrie.Helper
 {
     public class TwitterHub : Hub
     {
         private readonly ITwitterCredentials _credentials;
+ 
+
         public TwitterHub()
         {
             _credentials = new TwitterCreds().GenerateCredentials();
@@ -28,7 +32,7 @@ namespace Valkyrie.Helper
         {
             if (!string.IsNullOrEmpty(hashtags))
             {
-                foreach (string hashtag in hashtags.Split(" "))
+                foreach (string hashtag in hashtags.Split(" ").Take(5).ToArray())
                 {
                     await StartMonitoring(hashtag);
                 }
@@ -38,17 +42,15 @@ namespace Valkyrie.Helper
 
         private async Task StartMonitoring(string hashtag)
         {
+
             TwitterClient client = new TwitterClient(_credentials);
             var stream = client.Streams.CreateFilteredStream();
             //Start by searching
-
             var searchParameter = new SearchTweetsParameters(hashtag)
             {
-                //   Lang = LanguageFilter.French,
                 SearchType = SearchResultType.Mixed,
                 ContinueMinMaxCursor = ContinueMinMaxCursor.UntilPageSizeIsDifferentFromRequested,
-                PageSize = 100,
-
+                PageSize = 1,
                 Until = DateTime.Now
             };
 
@@ -67,11 +69,8 @@ namespace Valkyrie.Helper
                     await SendMessage(JsonConvert.SerializeObject(miniTweet));
                 }
             }
-
             // Then monitor
             stream.AddTrack(hashtag);
-
-
             stream.MatchingTweetReceived += async (sender, args) =>
             {
                 // This event will be invoked every time a tweet created is matching your criteria
@@ -84,7 +83,6 @@ namespace Valkyrie.Helper
                     Link = tweet.Url
                 };
                 await SendMessage(JsonConvert.SerializeObject(miniTweet));
-
             };
             await stream.StartMatchingAllConditionsAsync();
         }
