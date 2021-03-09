@@ -2,9 +2,9 @@
 @model Valkyrie.Pages.SubdomainsModel
 <div class="card" style="width:auto">
     <div class="card-body">
-        <h5 class="card-title">Enumerate subdomains (the request will also scan for ports 80,443,21,22)</h5>
+        <h5 class="card-title">Enumerate subdomains (the request will also scan each discovered sub for ports 80,443,21,22)</h5>
         <h6 class="card-subtitle mb-2 text-muted">The result is based on Sublist3r (https://github.com/aboul3la/Sublist3r) </h6>
-        <p class="card-text">Sublist3r is a python tool designed to enumerate subdomains of websites using OSINT. It helps penetration testers and bug hunters collect and gather subdomains for the domain they are targeting. Sublist3r enumerates subdomains using many search engines such as Google, Yahoo, Bing, Baidu and Ask. Sublist3r also enumerates subdomains using Netcraft, Virustotal, ThreatCrowd, DNSdumpster and ReverseDNS.</p>
+        <p class="card-text">Sublist3r is tool designed to enumerate subdomains of websites using OSINT. It helps penetration testers and bug hunters collect and gather subdomains for the domain they are targeting. Sublist3r enumerates subdomains using many search engines such as Google, Yahoo, Bing, Baidu and Ask. Sublist3r also enumerates subdomains using Netcraft, Virustotal, ThreatCrowd, DNSdumpster and ReverseDNS.</p>
         <div class="input-group mb-3">
             <input type="url" class="form-control" id="UserInput" placeholder="example.com
 " aria-label="Recipient's username" aria-describedby="basic-addon2" asp-for="UserInput" required>
