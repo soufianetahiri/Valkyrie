@@ -4,11 +4,11 @@
 <div class="card" style="width:auto">
     <div class="card-body">
         <h5 class="card-title">Pastebin Dump</h5>
-        <h6 class="card-subtitle mb-2 text-muted">(Site: https://twitter.com, Rate Limit: https://developer.twitter.com/en/docs/twitter-api/rate-limits)</h6>
-        <p class="card-text">Keep an eye on latest tweets that contain hashtags/keywords (space separated) (minitor up to 5 keywords). Chart might be incomplete due to Twitter ratelimit.</p>
+        <h6 class="card-subtitle mb-2 text-muted">(Site:https://pastebin.com/) </h6>
+        <p class="card-text">Keep an eye on bins that contain keywords (space separated) . Chart might be incomplete due to ratelimit.</p>
         <div class="input-group mb-3">
             @Html.AntiForgeryToken()
-            <input type="text" class="form-control" id="UserInput" placeholder="Enter #hash1 keyword #hash2;...
+            <input type="text" class="form-control" id="UserInput" placeholder="Enter keyword1 keyword2...
 " aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-success" type="button" id="btnSend">Submit</button>

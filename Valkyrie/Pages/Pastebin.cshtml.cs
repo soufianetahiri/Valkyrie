@@ -105,7 +105,7 @@ namespace Valkyrie.Pages
                 {
                     HttpAsync httpAsync = new HttpAsync();
                     string response = await httpAsync.Get(PastBinUrl.Replace("#bin#", binid));
-                    
+                    return Content(response);
                 }
                 catch (Exception)
                 {
