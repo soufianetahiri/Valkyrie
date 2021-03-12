@@ -44,8 +44,11 @@ namespace Valkyrie.Pages
                     };
 
                     var tweets = client.Search.SearchTweetsAsync(searchParam).Result.ToList();
+                    tweetList.AddRange(tweets.GroupBy(d => d.CreatedAt.Date).Select(a => new TweetsData
+                    { Count = a.Count(), Date = a.Key.ToString("dd/MM/yyyy"), Keyword = keyword }).ToList());
                     while (tweets.Count > 0)
                     {
+                     
                         searchParam.MaxId = tweets.Select(x => x.Id).Min() - 1;
                         searchParam.Since = DateTime.Today;
                         searchParam.PageSize = 100;

@@ -50,7 +50,7 @@ namespace Valkyrie.Helper
             {
                 SearchType = SearchResultType.Mixed,
                 ContinueMinMaxCursor = ContinueMinMaxCursor.UntilPageSizeIsDifferentFromRequested,
-                PageSize = 1,
+                PageSize = 10,
                 Until = DateTime.Now
             };
 

@@ -34,25 +34,25 @@
 
 <script src="~/lib/Chart.js/Chart.js"></script>
 <script>
-
-    document.getElementById("btnSend").addEventListener("click", function (event) {
-
-        var hashtags = document.getElementById("UserInput").value;
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            var response = $.ajax({
+    $(document).ready(function () {
+        $("#loader").attr('style', 'display:none!important');
+        document.getElementById("btnSend").addEventListener("click", function (event) {
+            var hashtags = document.getElementById("UserInput").value;
+            $("#loader").attr('style', 'display:flex');
+            $.ajax({
                 async: false,
                 cache: false,
                 url: "/twitter?handler=chartdata",
                 data: {
                     hashtags: hashtags
+                },
+                success: function (response) {
+                    console.log(response);
+                    eval(response);
+                    $("#loader").attr('style', 'display:none!important');
                 }
             });
-            console.log(response.responseText);
-            eval(response.responseText);
-        }
-
+        });
     });
 </script>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
