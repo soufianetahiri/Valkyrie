@@ -44,17 +44,18 @@
         </nav>
     </header>
     <div class="container-fluid">
+        <div class="d-flex justify-content-center" id="loader">
+            <div class="spinner-border text-warning" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="d-flex justify-content-center" id="loader">
-            <div class="spinner-border text-warning" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
+
         <div class="container">
             &copy; 2021 - Valkyrie - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>

@@ -8,6 +8,7 @@ using ChartJSCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using Tweetinvi;
 using Tweetinvi.Core.Models;
 using Tweetinvi.Models;
@@ -25,6 +26,32 @@ namespace Valkyrie.Pages
 
         public void OnGet()
         {
+        }
+
+        public async Task<ContentResult> OnPostUserDataAsync(string userid)
+        {
+            if (!string.IsNullOrEmpty(userid))
+            {
+                try
+                {
+                    TwitterClient client = new TwitterClient(new TwitterCreds().GenerateCredentials());
+                    var usr = await client.Users.GetUserAsync(userid).ConfigureAwait(true);
+                    if (usr!=null)
+                    {
+                        return Content(JsonConvert.SerializeObject(usr));
+                    } 
+                }
+                catch (Exception)
+                {
+
+                    return Content("Raw data not found");
+                }
+            }
+            else
+            {
+                return Content("Raw data not found");
+            }
+            return Content("Raw data not found");
         }
         private List<TweetsData> GetTweets(string hashtags)
         {
@@ -63,7 +90,7 @@ namespace Valkyrie.Pages
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     //quick and dirty rate limit handling 
                     if (tweetList?.Count > 0)
@@ -119,5 +146,13 @@ namespace Valkyrie.Pages
         public int Count { get; set; }
         public string Date { get; set; }
         public string Keyword { get; set; }
+    }
+    public class TweetUser
+    {
+        public string Fullname { get; set; }
+        public string PrifileBannerImg { get; set; }
+        public string Avatar { get; set; }
+        public string CreationDate { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Valkyrie.Helper
     public class TwitterHub : Hub
     {
         private readonly ITwitterCredentials _credentials;
- 
+        private bool IsMonitorOn = true;
 
         public TwitterHub()
         {
@@ -42,7 +42,7 @@ namespace Valkyrie.Helper
 
         private async Task StartMonitoring(string hashtag)
         {
-
+          
             TwitterClient client = new TwitterClient(_credentials);
             var stream = client.Streams.CreateFilteredStream();
             //Start by searching
@@ -70,6 +70,7 @@ namespace Valkyrie.Helper
                 }
             }
             // Then monitor
+            IsMonitorOn = true;
             stream.AddTrack(hashtag);
             stream.MatchingTweetReceived += async (sender, args) =>
             {
@@ -83,11 +84,21 @@ namespace Valkyrie.Helper
                     Link = tweet.Url
                 };
                 await SendMessage(JsonConvert.SerializeObject(miniTweet));
+                if (!IsMonitorOn)
+                {
+                    stream.Stop();
+                }
             };
+          
+          
             await stream.StartMatchingAllConditionsAsync();
         }
 
-      
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            IsMonitorOn = false;
+            await base.OnDisconnectedAsync(exception);
+        }
     }
     public class MiniTweet
     {
