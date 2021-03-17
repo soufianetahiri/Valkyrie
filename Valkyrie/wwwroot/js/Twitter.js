@@ -36,8 +36,14 @@ connection.on("ReceiveMessage", function (message) {
             },
             data: { userid: elm.target.id },
             success: function (response) {
-                //$("#raw").text(response);
-                alert(response);
+                var tuser = JSON.parse(response);
+                $("#twitterUserName").text(tuser.Fullname);
+                $("#twitterUserName").attr("href", tuser.Profile);
+                $("#twitterDescription").text(tuser.Description);
+                $("#twitterCreationDate").text(tuser.CreationDate);
+                $("#twitterLocationtwitterLocation").text(tuser.GeoLoc);
+                $("#avatar").attr("src", tuser.Avatar);
+                $(".cardTwitterheader").attr("style", "background: url(" + tuser.PrifileBannerImg + ");");
             },
         });
     });

@@ -28,6 +28,7 @@ namespace Valkyrie.Pages
         {
         }
 
+        [Obsolete]
         public async Task<ContentResult> OnPostUserDataAsync(string userid)
         {
             if (!string.IsNullOrEmpty(userid))
@@ -38,7 +39,17 @@ namespace Valkyrie.Pages
                     var usr = await client.Users.GetUserAsync(userid).ConfigureAwait(true);
                     if (usr!=null)
                     {
-                        return Content(JsonConvert.SerializeObject(usr));
+                        TweetUser tweetUser = new TweetUser
+                        {
+                            Avatar = usr.ProfileImageUrl,
+                            CreationDate = $"Joined {usr.CreatedAt}",
+                            Description = usr.Description,
+                            Fullname = usr.Name,
+                            PrifileBannerImg = usr.ProfileBackgroundImageUrl,
+                            GeoLoc = usr.Location,
+                            Profile = $"https://twitter.com/{usr.ScreenName}"
+                        };
+                        return Content(JsonConvert.SerializeObject(tweetUser));
                     } 
                 }
                 catch (Exception)
@@ -154,5 +165,7 @@ namespace Valkyrie.Pages
         public string Avatar { get; set; }
         public string CreationDate { get; set; }
         public string Description { get; set; }
+        public string GeoLoc { get; set; }
+        public string Profile { get; set; }
     }
 }
