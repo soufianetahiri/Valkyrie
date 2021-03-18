@@ -39,15 +39,12 @@ namespace Valkyrie.Pages
             partialCert.CrtSHes = partialCert.CrtSHes.OrderBy(d => d.id).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
             return Partial("_Certs", partialCert);
         }
-
-
         public async Task<JsonResult> OnPostAsync(string UserInput)
         {
             HttpAsync httpAsync = new HttpAsync();
             string response = await httpAsync.Get(CrtShUrl.Replace("#URL#", UserInput));
           //  var x = JArray.Parse(response).Reverse() ;
             return new JsonResult ( response);
-       
         }
     }
 

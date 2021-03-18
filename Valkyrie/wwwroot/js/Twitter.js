@@ -7,7 +7,9 @@ connection.on("ReceiveMessage", function (message) {
     document.getElementById("btnStop").disabled = false;
     var tweet = JSON.parse(message);
         const a = createElementWithClass('a', 'list-group-item list-group-item-action');
-        const div = createElementWithClass('div', 'd-flex w-100 justify-content-between');
+    const div = createElementWithClass('div', 'd-flex w-100 justify-content-between');
+    div.setAttribute("data-toggle", "tooltip");
+    div.setAttribute("title", "Click on the username to grab infos");
         a.appendChild(div);
         const h5 = createElementWithClass('h5', 'mb-1');
     h5.textContent = tweet.User.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + "said: ";
@@ -24,6 +26,9 @@ connection.on("ReceiveMessage", function (message) {
         a.appendChild(link);
     document.getElementById("tweetsGroup").appendChild(a);
     document.getElementById("tweetsGroup").scrollTop = document.getElementById("tweetsGroup").scrollHeight;
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
     //searchuser infos data
     $('#tweetsGroup h5').on('click', function (elm) {
         $("#loader").attr('style', 'display:flex');
@@ -41,7 +46,7 @@ connection.on("ReceiveMessage", function (message) {
                 $("#twitterUserName").attr("href", tuser.Profile);
                 $("#twitterDescription").text(tuser.Description);
                 $("#twitterCreationDate").text(tuser.CreationDate);
-                $("#twitterLocationtwitterLocation").text(tuser.GeoLoc);
+                $("#twitterLocationtwitterLocation").text("<i class='fa fa-map-marker'></i> "+tuser.GeoLoc);
                 $("#avatar").attr("src", tuser.Avatar);
                 $(".cardTwitterheader").attr("style", "background: url(" + tuser.PrifileBannerImg + ");");
             },
