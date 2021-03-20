@@ -89,8 +89,6 @@ namespace Valkyrie.Helper
                     stream.Stop();
                 }
             };
-          
-          
             await stream.StartMatchingAllConditionsAsync();
         }
 

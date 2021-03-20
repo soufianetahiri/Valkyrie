@@ -41,10 +41,17 @@ namespace Valkyrie.Pages
         }
         public async Task<JsonResult> OnPostAsync(string UserInput)
         {
-            HttpAsync httpAsync = new HttpAsync();
-            string response = await httpAsync.Get(CrtShUrl.Replace("#URL#", UserInput));
-          //  var x = JArray.Parse(response).Reverse() ;
-            return new JsonResult ( response);
+            try
+            {
+                HttpAsync httpAsync = new HttpAsync();
+                string response = await httpAsync.Get(CrtShUrl.Replace("#URL#", UserInput));
+                return new JsonResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+      
         }
     }
 

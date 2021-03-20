@@ -1,0 +1,53 @@
+﻿@page
+@model DnsinfoModel
+
+<div class="card" style="width:auto">
+    <div class="card-body">
+        <h5 class="card-title">DNS Infos</h5>
+        <h6 class="card-subtitle mb-2 text-muted">(Site: https://securitytrailsr.com, Rate Limit: https://securitytrails.com/corp/pricing#api) </h6>
+        <p class="card-text">Use this interface to get an idea on Current DNS records, Historical DNS records, Subdomains and Navigate through IP subnets and neighborhoods .</p>
+        @Html.AntiForgeryToken()
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="8.8.8.8" aria-label="IP Lookup" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="ip">IP address research</button>
+            </div>
+        </div>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="example.com" aria-label="Hostname" aria-describedby="basic-addon2" id="hostname">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="cdns">Current DNS records</button>
+                <button class="btn btn-outline-secondary" type="button" id="hdns">Historical DNS records</button>
+                <button class="btn btn-outline-secondary" type="button" id="subs">Get Subdomains</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loader").attr('style', 'display:none!important');
+ 
+        $('#hdns').on('click', function () {
+            $("#loader").attr('style', 'display:flex');
+            var hostname = $('#hostname').val();
+ 
+            $.ajax({
+                type: "POST",
+                url: "/Dnsinfo?handler=Dnshistory",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("TryHarder",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: { hostname: hostname },
+                success: function (response) {
+                    var j = JSON.parse(response);
+                    $.each(j.records, function (key, value) {
+                  //      t.row.add([value.issuer_ca_id, value.issuer_name, value.common_name, value.name_value, value.not_before, value.not_after, value.entry_timestamp]).draw(true);
+                    });
+                    $("#loader").attr('style', 'display:none!important');
+                },
+            });
+        })
+    });
+
+</script>

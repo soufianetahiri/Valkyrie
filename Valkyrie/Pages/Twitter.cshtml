@@ -31,11 +31,17 @@
     </div>
 
 </div>
- 
+
 <div class="container">
     <div class="row">
         <div class="col-sm-8">
             <canvas id="lineChart"></canvas>
+            <div class="text-center" id="waiting">
+                <div class="spinner-border" role="status">
+
+                </div>
+                <div>waiting data...</div>
+            </div>
         </div>
         <div class="col-6 col-md-4 border border-warning">
 
@@ -54,7 +60,7 @@
                         A random infosec/science enthusiast guy..
                     </div>
                     <div class="desc" id="twitterCreationDate">Joined 12/12/2012</div>
-                    <div class="desc" id="twitterLocationtwitterLocation"><i class='fa fa-map-marker'></i> France</div>
+                    <i class='fa fa-map-marker'></i><div class="desc" id="twitterLocationtwitterLocation"> France</div>
                 </div>
             </div>
 
@@ -256,7 +262,11 @@
         background-color: rgba(214, 224, 226, 0.2);
     }
 
-        .cardTwitter.hovercardTwitter .cardTwitterheader { background: url("https://pbs.twimg.com/profile_banners/353549736/1426158105/1500x500"); background-size: cover; height: 135px; }
+        .cardTwitter.hovercardTwitter .cardTwitterheader {
+            background: url("https://pbs.twimg.com/profile_banners/353549736/1426158105/1500x500");
+            background-size: cover;
+            height: 135px;
+        }
 
         .cardTwitter.hovercardTwitter .avatar {
             position: relative;
@@ -294,11 +304,11 @@
                 color: #737373;
                 text-overflow: ellipsis;
             }
-  
 </style>
 <script src="~/lib/Chart.js/Chart.js"></script>
 <script>
     $(document).ready(function () {
+        try {
         $("#loader").attr('style', 'display:none!important');
         $("#btnStop").attr('style', 'display:none!important');
 
@@ -314,12 +324,15 @@
                     hashtags: hashtags
                 },
                 success: function (response) {
-                    console.log(response);
                     eval(response);
+                    $("#waiting").hide();
                     $("#loader").attr('style', 'display:none!important');
                 }
             });
         });
+        } catch (e) {
+            toastr.error(e);
+        }
     });
 </script>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>

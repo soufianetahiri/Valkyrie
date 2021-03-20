@@ -4,6 +4,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/TwitterHub").build
 document.getElementById("btnSend").disabled = true;
 
 connection.on("ReceiveMessage", function (message) {
+    try {
     document.getElementById("btnStop").disabled = false;
     var tweet = JSON.parse(message);
         const a = createElementWithClass('a', 'list-group-item list-group-item-action');
@@ -31,7 +32,6 @@ connection.on("ReceiveMessage", function (message) {
     })
     //searchuser infos data
     $('#tweetsGroup h5').on('click', function (elm) {
-        $("#loader").attr('style', 'display:flex');
         $.ajax({
             type: "POST",
             url: "/Twitter?handler=userdata",
@@ -46,12 +46,15 @@ connection.on("ReceiveMessage", function (message) {
                 $("#twitterUserName").attr("href", tuser.Profile);
                 $("#twitterDescription").text(tuser.Description);
                 $("#twitterCreationDate").text(tuser.CreationDate);
-                $("#twitterLocationtwitterLocation").text("<i class='fa fa-map-marker'></i> "+tuser.GeoLoc);
+                $("#twitterLocationtwitterLocation").text(tuser.GeoLoc);
                 $("#avatar").attr("src", tuser.Avatar);
                 $(".cardTwitterheader").attr("style", "background: url(" + tuser.PrifileBannerImg + ");");
             },
         });
     });
+    } catch (err) {
+        toastr.error(err); 
+    }
 });
 function createElementWithClass(type, className) {
     const element = document.createElement(type);
@@ -61,13 +64,13 @@ function createElementWithClass(type, className) {
 connection.start().then(function () {
     document.getElementById("btnSend").disabled = false;
 }).catch(function (err) {
-    return console.error(err.toString());
+        toastr.error(err); 
 });
 document.getElementById("btnSend").addEventListener("click", function (event) {
  
     var hashtags = document.getElementById("UserInput").value;
     connection.invoke("getTweetsAsync", hashtags).catch(function (err) {
-        return console.error(err.toString());
+        toastr.error(err + " You probably reached the rate limit. Try again in 15 minutes."); 
     });
     event.preventDefault();
 });
@@ -75,7 +78,7 @@ document.getElementById("btnSend").addEventListener("click", function (event) {
 document.getElementById("btnStop").addEventListener("click", function (event) {
     connection.stop().then(function () {
         document.getElementById("btnStop").disabled = true;
-        alert('monitoring stopped');
+        toastr.success("Monitoring stopped");
     });
     event.preventDefault();
 });

@@ -17,7 +17,7 @@
         </div>
     </div>
 </div>
-<table id="binDatatable" class="table table-sm table-dark" width="100%" cellspacing="0">
+<table id="binDatatable" class="table table-striped table-sm table-dark" width="100%" cellspacing="0">
     <thead>
         <tr>
             <th>Keyword</th>
@@ -29,80 +29,84 @@
     </thead>
 </table>
 
- <div class="container-fluid">
-     <div class="row justify-content-center" >
-         <div class="col-md-9">
-             <canvas id="lineChart"></canvas>
-         </div>
-        
-     </div>
-     <div class="row">
-         <div class="col">
-             <div class="form-floating">
-  
-                 <div class="p-3 mb-2 bg-light text-dark" contenteditable="true" aria-multiline="true" ><samp id="raw">Click Fetch to try to get the bin content.</samp></div>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <canvas id="lineChart"></canvas>
+        </div>
 
-             </div>
-         </div>
- 
-     </div>
- </div>
- @*<div class="d-flex justify-content-center" id="loader">
-     <div class="spinner-border text-warning" role="status">
-         <span class="sr-only">Loading...</span>
-     </div>
- </div>*@
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-floating">
+
+                <div class="p-3 mb-2 bg-light text-dark" contenteditable="true" aria-multiline="true"><samp id="raw">Click Fetch to try to get the bin content.</samp></div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+@*<div class="d-flex justify-content-center" id="loader">
+        <div class="spinner-border text-warning" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>*@
 <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
 <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/lib/Chart.js/Chart.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-    $("#loader").attr('style', 'display:none!important');
-        $('#btnSend').on('click', function () {
-            $("#loader").attr('style', 'display:flex');
-            var UserInput = $('#UserInput').val();
-            var t = $('#binDatatable').DataTable();
-            t.order([0, "asc"], [1, "desc"]);
-
-            t.clear().draw();
-            $.ajax({
-                type: "POST",
-                url: "/Pastebin",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("TryHarder",
-                        $('input:hidden[name="__RequestVerificationToken"]').val());
-                },
-                data: { UserInput: UserInput },
-                success: function (response) {
-                    eval(response.chart);
-                    $.each(response.table, function (key, value) {
-                        var j = JSON.parse(value);
-                        $.each(j.data, function (k, v) {
-                            var newRow = t.row.add([j.search, v.time, v.tags, v.text, "<button type='button' class='btn btn-outline-secondary' id= '" + v.id + " '><i class='fa fa-download'></i> Fetch</button>"]).draw(false).node();
-                            $('td:eq(4)', newRow).attr('id', v.id);
+        try {
+            $("#loader").attr('style', 'display:none!important');
+            $('#btnSend').on('click', function () {
+                $("#loader").attr('style', 'display:flex');
+                var UserInput = $('#UserInput').val();
+                var t = $('#binDatatable').DataTable();
+                t.order([0, "asc"], [1, "desc"]);
+                t.clear().draw();
+                $.ajax({
+                    type: "POST",
+                    url: "/Pastebin",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("TryHarder",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    data: { UserInput: UserInput },
+                    success: function (response) {
+                        eval(response.chart);
+                        $.each(response.table, function (key, value) {
+                            var j = JSON.parse(value);
+                            $.each(j.data, function (k, v) {
+                                var newRow = t.row.add([j.search, v.time, v.tags, v.text, "<button type='button' class='btn btn-outline-secondary' id= '" + v.id + " '><i class='fa fa-download'></i> Fetch</button>"]).draw(false).node();
+                                $('td:eq(4)', newRow).attr('id', v.id);
+                            });
                         });
-                    });
-                    $("#loader").attr('style', 'display:none!important');
-                    //search bin raw data
-                    $('#binDatatable tbody').on('click', function (elm) {
-                        $("#loader").attr('style', 'display:flex');
-                        $.ajax({
-                            type: "POST",
-                            url: "/Pastebin?handler=rawdata",
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader("TryHarder",
-                                    $('input:hidden[name="__RequestVerificationToken"]').val());
-                            },
-                            data: { binid: elm.target.id },
-                            success: function (response) {
-                                $("#raw").text(response);
-                            },
+                        $("#loader").attr('style', 'display:none!important');
+                        //search bin raw data
+                        $('#binDatatable tbody').on('click', function (elm) {
+                            $("#loader").attr('style', 'display:flex');
+                            $.ajax({
+                                type: "POST",
+                                url: "/Pastebin?handler=rawdata",
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader("TryHarder",
+                                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                                },
+                                data: { binid: elm.target.id },
+                                success: function (response) {
+                                    $("#raw").text(response);
+                                },
+                            });
                         });
-                    });
-                },
+                    },
+                });
             });
+        }
+        }
+catch (e) {
+        toastr.error(e);
+    }
         });
-      
-    });
-   
+
 </script>

@@ -73,28 +73,15 @@ namespace Valkyrie.Pages
         {
             return new LineDataset()
             {
-
                 Label = label,
                 Data = data,
-                //Fill = "false",
-                //LineTension = 0.1,
                 BackgroundColor = ChartColor.CreateRandomChartColor(true),
                 BorderColor = ChartColor.CreateRandomChartColor(true),
-                //BorderCapStyle = "butt",
-                //BorderDash = new List<int> { },
-                //BorderDashOffset = 0.0,
-                //BorderJoinStyle = "round",
                 PointBorderColor = new List<ChartColor>() { ChartColor.CreateRandomChartColor(true) },
                 PointBackgroundColor = new List<ChartColor>() { ChartColor.CreateRandomChartColor(true) },
-                // PointBorderWidth = new List<int> { 1 },
-                //PointHoverRadius = new List<int> { 5 },
                 PointHoverBackgroundColor = new List<ChartColor>() { ChartColor.CreateRandomChartColor(true) },
                 PointHoverBorderColor = new List<ChartColor>() { ChartColor.CreateRandomChartColor(true) },
                 Fill = "true"
-                //    PointHoverBorderWidth = new List<int> { 2 },
-                //PointRadius = new List<int> { 1 },
-                //PointHitRadius = new List<int> { 10 },
-                //SpanGaps = false
             };
         }
         public async Task<ContentResult> OnPostRawDataAsync(string binid)
@@ -107,17 +94,16 @@ namespace Valkyrie.Pages
                     string response = await httpAsync.Get(PastBinUrl.Replace("#bin#", binid));
                     return Content(response);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
-                    return Content("Raw data not found");
+                    return Content(ex.Message);
                 } 
             }
             else
             {
-                return Content("Raw data not found");
+                return Content("No data not found");
             }
-            return Content("Raw data not found");
         }
         public async Task<JsonResult> OnPostAsync(string UserInput)
         {
