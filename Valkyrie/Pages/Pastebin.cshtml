@@ -57,8 +57,8 @@
 <script src="~/lib/Chart.js/Chart.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#loader").attr('style', 'display:none!important');
         try {
-            $("#loader").attr('style', 'display:none!important');
             $('#btnSend').on('click', function () {
                 $("#loader").attr('style', 'display:flex');
                 var UserInput = $('#UserInput').val();
@@ -103,10 +103,9 @@
                 });
             });
         }
+        catch (e) {
+            toastr.error(e);
         }
-catch (e) {
-        toastr.error(e);
-    }
-        });
+    });
 
 </script>

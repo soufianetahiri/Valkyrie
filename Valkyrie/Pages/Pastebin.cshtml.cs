@@ -127,12 +127,13 @@ namespace Valkyrie.Pages
                                 binResults.Add(JsonConvert.DeserializeObject<BinResult>(response));
                                 jReturns.Add(response);
                             }
-                            catch (Exception ec)
+                            catch (Exception)
                             {
+
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                     }
                 }
