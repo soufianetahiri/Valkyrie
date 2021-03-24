@@ -40,7 +40,7 @@ A chart is drawn to give you an idea on how much "talk" is out there about topic
 ## (in-depth)Subdomains
 It fully relises on Sublist3r which is tool designed to enumerate subdomains of websites using OSINT. It helps penetration testers and bug hunters collect and gather subdomains for the domain they are targeting. Sublist3r enumerates subdomains using many search engines such as Google, Yahoo, Bing, Baidu and Ask. Sublist3r also enumerates subdomains using Netcraft, Virustotal, ThreatCrowd, DNSdumpster and ReverseDNS.
 
-You need to ***MANUALLY*** install it; and to set your Python path on the appsettings.json. Ex:
+You need to ***MANUALLY*** install it; and to set your Python path on the appsettings.json. Ex (yes I revoked the API key ;)):
 
       "AppSettings": {
         "PythonPath": "C:\\Users\\soufiane.tahiri\\AppData\\Local\\Programs\\Python\\Python39",
