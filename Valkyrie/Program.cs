@@ -15,6 +15,7 @@ namespace Valkyrie
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://valkyrie:1986");
                 });
     }
 }

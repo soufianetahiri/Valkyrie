@@ -54,7 +54,7 @@ namespace Valkyrie
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+          //  app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -66,7 +66,6 @@ namespace Valkyrie
                 endpoints.MapRazorPages();
                 endpoints.MapHub<TwitterHub>("/TwitterHub");
                 endpoints.MapHub<SubdomainsHub>("/SubdomainsHub");
-                //              endpoints.MapHub<TwitterHub>("/TwitterModel");
             });
         }
     }
