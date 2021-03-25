@@ -74,6 +74,7 @@
                     },
                     data: { UserInput: UserInput },
                     success: function (response) {
+                        $("#loader").attr('style', 'display:none!important');
                         eval(response.chart);
                         $.each(response.table, function (key, value) {
                             var j = JSON.parse(value);
@@ -82,7 +83,7 @@
                                 $('td:eq(4)', newRow).attr('id', v.id);
                             });
                         });
-                        $("#loader").attr('style', 'display:none!important');
+        
                         //search bin raw data
                         $('#binDatatable tbody').on('click', function (elm) {
                             $("#loader").attr('style', 'display:flex');

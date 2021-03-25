@@ -1,19 +1,16 @@
+using ChartJSCore.Helpers;
+using ChartJSCore.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using ChartJSCore.Helpers;
-using ChartJSCore.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
 using Tweetinvi;
-using Tweetinvi.Core.Models;
 using Tweetinvi.Models;
 using Tweetinvi.Parameters;
-using Tweetinvi.Streaming;
 using Valkyrie.Helper;
 using Chart = ChartJSCore.Models.Chart;
 
@@ -37,7 +34,7 @@ namespace Valkyrie.Pages
                 {
                     TwitterClient client = new TwitterClient(new TwitterCreds().GenerateCredentials());
                     var usr = await client.Users.GetUserAsync(userid).ConfigureAwait(true);
-                    if (usr!=null)
+                    if (usr != null)
                     {
                         TweetUser tweetUser = new TweetUser
                         {
@@ -50,7 +47,7 @@ namespace Valkyrie.Pages
                             Profile = $"https://twitter.com/{usr.ScreenName}"
                         };
                         return Content(JsonConvert.SerializeObject(tweetUser));
-                    } 
+                    }
                 }
                 catch (Exception)
                 {
@@ -86,7 +83,7 @@ namespace Valkyrie.Pages
                     { Count = a.Count(), Date = a.Key.ToString("dd/MM/yyyy"), Keyword = keyword }).ToList());
                     while (tweets.Count > 0)
                     {
-                     
+
                         searchParam.MaxId = tweets.Select(x => x.Id).Min() - 1;
                         searchParam.Since = DateTime.Today;
                         searchParam.PageSize = 100;
@@ -120,7 +117,7 @@ namespace Valkyrie.Pages
 
             List<TweetsData> tweets = GetTweets(hashtags);
 
-             var dates = tweets.GroupBy(d => d.Date).Select(k => k.Key).ToList();
+            var dates = tweets.GroupBy(d => d.Date).Select(k => k.Key).ToList();
             Chart chart = new Chart
             {
                 Type = Enums.ChartType.PolarArea

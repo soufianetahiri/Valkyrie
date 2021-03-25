@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Tweetinvi;
 using Tweetinvi.Core.Models;
 using Tweetinvi.Models;
 using Tweetinvi.Parameters;
-using ChartJSCore.Models;
-using System.Threading;
 
 namespace Valkyrie.Helper
 {
@@ -42,7 +38,7 @@ namespace Valkyrie.Helper
 
         private async Task StartMonitoring(string hashtag)
         {
-          
+
             TwitterClient client = new TwitterClient(_credentials);
             var stream = client.Streams.CreateFilteredStream();
             //Start by searching

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Valkyrie.Helper
@@ -11,7 +7,7 @@ namespace Valkyrie.Helper
     {
         private static readonly HttpClient _httpClient = new HttpClient();
 
-        public  async Task<string> Get(string url)
+        public async Task<string> Get(string url)
         {
             // The actual Get method
             using (var result = await _httpClient.GetAsync(url))

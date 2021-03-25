@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Tweetinvi.Models;
+﻿using Tweetinvi.Models;
 
 namespace Valkyrie.Helper
 {
@@ -11,7 +7,7 @@ namespace Valkyrie.Helper
         private readonly ITwitterCredentials _credentials;
         public TwitterCreds() => _credentials = GenerateCredentials();
 
- 
+
 
         public ITwitterCredentials GenerateCredentials()
         {
