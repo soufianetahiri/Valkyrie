@@ -1,0 +1,49 @@
+﻿@page
+@model Valkyrie.Pages.UserNameReconModel
+
+<div class="card" style="width:auto">
+    <div class="card-body">
+        <h5 class="card-title">Username Recon</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Give it few minutes. Rate Limit:none </h6>
+        <p class="card-text">Based on the idea behind 'Instant Username Search', this feature helps you find out if the given username is taken on more than 130 social media sites</p>
+        @Html.AntiForgeryToken()
+
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="s@ufi4n" aria-label="UserName" aria-describedby="basic-addon2" id="nickname">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="Search">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        try {
+            $("#loader").attr('style', 'display:none!important');
+            $('#Search').on('click', function () {
+                $("#loader").attr('style', 'display:flex');
+                var nickname = $('#nickname').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/usernamerecon?handler=NickName",
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("TryHarder",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    data: { nickname: nickname },
+                    success: function (response) {
+                        console.log(response);
+                        //var j = JSON.parse(response);
+                        //console.log(j);
+                        $("#loader").attr('style', 'display:none!important');
+                    },
+                });
+            });
+        } catch (e) {
+            toastr.error(e);
+        }
+    });
+</script>
