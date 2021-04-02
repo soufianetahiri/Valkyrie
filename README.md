@@ -1,7 +1,7 @@
 
 ## What is it?
 Valkyrie is another OSINT tool, it allows you to perform some basics recon/monitoring tasks.
-This tool stills under development, many other features are yet to come. I barely handled errors, and user inputs so don't be surprised if nothing worked :). As always, pull requests are welcomed!
+This tool stills under development, many other features are yet to come. I barely handled errors, and user inputs so don't be surprised if nothing works :). As always, pull requests are welcomed!
 Valkirye is built using [Razor pages](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-5.0&tabs=visual-studio) and depends on [jQuery](https://jquery.com/),  [Bootstrap](https://getbootstrap.com/), [Datatables](https://datatables.net/) and [Chart.js](https://www.chartjs.org/). Realtime monitoring is handled by [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr)
 
 Happy recon folks.
