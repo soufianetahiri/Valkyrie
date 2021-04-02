@@ -9,14 +9,17 @@
         @Html.AntiForgeryToken()
 
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="s@ufi4n" aria-label="UserName" aria-describedby="basic-addon2" id="nickname">
+            <input type="text" class="form-control" placeholder="s@ufi4ne" aria-label="UserName" aria-describedby="basic-addon2" id="nickname">
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" id="Search">Search</button>
             </div>
         </div>
     </div>
 </div>
-
+<div class="container">
+    <div class="card-deck" id="cards">
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         try {
@@ -28,7 +31,6 @@
                 $.ajax({
                     type: "POST",
                     url: "/usernamerecon?handler=NickName",
-                    dataType: "json",
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("TryHarder",
                             $('input:hidden[name="__RequestVerificationToken"]').val());
@@ -36,8 +38,7 @@
                     data: { nickname: nickname },
                     success: function (response) {
                         console.log(response);
-                        //var j = JSON.parse(response);
-                        //console.log(j);
+                        $("#cards").html(response);
                         $("#loader").attr('style', 'display:none!important');
                     },
                 });

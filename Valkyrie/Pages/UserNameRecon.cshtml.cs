@@ -29,6 +29,7 @@ namespace Valkyrie.Pages
             List<ResultModel> resultModels = new List<ResultModel>();
             foreach (SocialModel socialModel in socialModels)
             {
+         
                 try
                 {
                    //fix vk.com encoding
@@ -40,11 +41,10 @@ namespace Valkyrie.Pages
                     client.DefaultRequestHeaders.Add("Connection", "keep-alive");
                     client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36");
                     bool available = false;
-
-                    using (var response = await client.GetAsync(url))
+                   
+                        using (var response = await client.GetAsync(url))
                     {
-                        try
-                        {
+                       
                         string responseData = await response.Content.ReadAsStringAsync();
                         if (socialModel.errorType == 0)
                         {
@@ -67,25 +67,52 @@ namespace Valkyrie.Pages
                                 available = true;
                             }
                         }
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw;
-                        }
+                   
                     }
-                    resultModels.Add(new ResultModel { Available = available, Service = socialModel.service, ProfileUrl = url });
+              
+                    resultModels.Add(new ResultModel { Available = available.ToString(), Service = socialModel.service, ProfileUrl = url });
 
                 }
                 catch (Exception)
                 {
+                    resultModels.Add(new ResultModel { Available ="unk", Service = socialModel.service, ProfileUrl = socialModel.url.Replace("{}", nickname) });
+ 
+                }
+  
+            }
+            return Content(ConstructDivs(resultModels));
+        }
+        public string ConstructDivs(List<ResultModel>  resultModels)
+        {
+            string baseDivs = " <div class=\"card mb-4 border-{0}\" style=\"min-width:12rem; max-height:12rem;\"> " +
+                "  <div class=\"card-body\">" +
+                " <h5 class=\"card-title\">{1}</h5>" +
+                "       <p class=\"card-text\">{2}</p>" +
+                "     </div><div class=\"card-footer\"> " +
+                "    <small class=\"text-muted\">Check<a href=\"{3}\" target=\"_blank\"> by yourself</a></small> " +
+                "    </div></div>";
+            StringBuilder sb = new StringBuilder();
+            foreach (ResultModel resultModel in resultModels)
+            {
+                if (resultModel.Available=="unk")
+                {
+                    sb.Append(string.Format(baseDivs, "warning", resultModel.Service, "Unable to tell, please visit the profile by yourself.", resultModel.ProfileUrl));
+                }
+                if (resultModel.Available== "False")
+                {
+                    sb.Append(string.Format(baseDivs, "success", resultModel.Service, $"Profile exists on {resultModel.Service}.", resultModel.ProfileUrl));
+                }
+                if (resultModel.Available == "True")
+                {
+                    sb.Append(string.Format(baseDivs, "danger", resultModel.Service, $"Profile not found on {resultModel.Service}.", resultModel.ProfileUrl));
 
-                    throw;
                 }
             }
-            return Content(JsonConvert.SerializeObject( resultModels));
+            return sb.ToString() ;
         }
     }
+
+ 
     public class SocialModel
     {
         public string service { get; set; }
@@ -96,7 +123,7 @@ namespace Valkyrie.Pages
     }
     public class ResultModel
     {
-        public bool Available { get; set; }
+        public string Available { get; set; }
         public string Service { get; set; }
         public string ProfileUrl { get; set; }
     }
