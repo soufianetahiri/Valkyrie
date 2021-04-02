@@ -61,6 +61,3 @@ Based on the idea behind 'Instant Username Search', this feature helps you find 
 
 ![UsernameRecon](https://raw.githubusercontent.com/soufianetahiri/Valkyrie/master/Valkyrie/Screenshots/username_recon.JPG)
 
-
-
-![Pastebin](https://raw.githubusercontent.com/soufianetahiri/Valkyrie/master/Valkyrie/Screenshots/pastbin_rawdata.jpg)
