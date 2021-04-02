@@ -55,3 +55,9 @@ This section helps to keep an eye on bins that contain keywords (space separated
 You can click on "Fetch" to try to get bins content, the generated chart allows you to know "how many leaks"/month is out there.
 
 ![Pastebin](https://raw.githubusercontent.com/soufianetahiri/Valkyrie/master/Valkyrie/Screenshots/pastbin_rawdata.jpg)
+
+## Username Recon
+Based on the idea behind 'Instant Username Search', this feature helps you find out if the given username is taken (if a profile exists) on more than 130 social media sites
+
+![UsernameRecon](https://raw.githubusercontent.com/soufianetahiri/Valkyrie/master/Valkyrie/Screenshots/username_recon.JPG)
+
